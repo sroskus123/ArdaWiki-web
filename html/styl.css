@@ -1,0 +1,143 @@
+/* Statická ukázka wiki Příběhů Ardy – napodobuje tmavý vzhled současné wiki (Wiki.js 2).
+   Bez externích písem a skriptů. Barvy změřené na wiki.pribehyardy.cz 25. 11. 2026. */
+:root {
+  --pozadi: #121212;
+  --lista: #000;
+  --menu: #171717;
+  --karta: #1e1e1e;
+  --text: #e0e0e0;
+  --text-tlumeny: #bdbdbd;
+  --sedy: #757575;
+  --odkaz: #90caf9;
+  --modra: #64b5f6;
+  --pismo: Roboto, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--pozadi); color: var(--text); font: 16px/24px var(--pismo); }
+a { color: var(--odkaz); }
+
+/* horní lišta */
+.lista { position: fixed; top: 0; left: 0; right: 0; height: 64px; background: var(--lista); display: flex;
+  align-items: center; padding: 0 16px; z-index: 30; box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14); }
+.logo { color: #fff; text-decoration: none; font-size: 20px; font-weight: 500; display: flex; align-items: center; gap: 12px; }
+.logo-obrazek { height: 36px; width: 36px; margin-right: 4px; object-fit: contain; }
+.prsten { width: 22px; height: 22px; border-radius: 50%; border: 4px solid #e2b23a; box-shadow: 0 0 6px #e2b23a88, inset 0 0 3px #7a5600; }
+.hledat { margin-left: auto; margin-right: auto; width: 360px; max-width: 40vw; height: 38px; border-radius: 19px;
+  background: #222; color: #9e9e9e; font-size: 14px; padding: 0 18px; display: flex; align-items: center; }
+.tlacitko-menu { display: none; color: #fff; font-size: 24px; cursor: pointer; margin-right: 12px; }
+.prepinac-menu { display: none; }
+
+/* levé menu */
+.navigace { position: fixed; top: 64px; bottom: 0; left: 0; width: 256px; background: var(--menu); overflow-y: auto;
+  padding: 8px 0 24px; z-index: 20; border-right: 1px solid rgba(255,255,255,.12); }
+.nav-sekce { margin: 10px 16px 2px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.12);
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--modra); }
+.nav-polozka { display: flex; align-items: center; gap: 14px; padding: 8px 16px; color: #fff; text-decoration: none;
+  font-size: 13px; font-weight: 500; }
+.nav-polozka:hover { background: rgba(255,255,255,.06); }
+.nav-polozka.aktivni { background: rgba(100,181,246,.16); color: var(--modra); }
+.nav-polozka.chysta-se { color: #6d6d6d; cursor: default; }
+.nav-ikona { width: 20px; text-align: center; font-size: 16px; opacity: .9; }
+.zastin { display: none; }
+
+/* hlavní plocha */
+.hlavni { margin-left: 256px; padding-top: 64px; min-height: 100vh; }
+.drobecky { padding: 14px 24px; font-size: 13px; color: #9e9e9e; background: #161616; }
+.drobecky a { color: #fff; text-decoration: none; }
+.drobecky span { color: #fff; font-weight: 500; }
+.hlava-stranky { padding: 18px 24px 14px 296px; background: #1a1a1a; }
+.titulek { margin: 0; font-size: 24px; font-weight: 400; line-height: 32px; color: var(--text); }
+.popis { font-size: 12px; color: var(--sedy); }
+.telo { display: grid; grid-template-columns: 256px minmax(0, 1fr); gap: 16px; padding: 16px 16px 40px; }
+.telo.bez-obsahu .bocni .obsah-karta { display: none; }
+
+/* boční karty */
+.bocni { display: flex; flex-direction: column; gap: 12px; }
+.karta { background: var(--karta); border-radius: 4px; padding: 14px 16px; font-size: 13px; }
+.nadpisek { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--modra); margin-bottom: 8px; }
+.obsah-karta ul { list-style: none; margin: 0; padding: 0; }
+.obsah-karta li a { display: block; padding: 6px 0; color: #fff; text-decoration: none; font-weight: 500; }
+.obsah-karta li a::before { content: "›"; color: #9e9e9e; margin-right: 12px; }
+.obsah-karta li.u2 a { padding-left: 14px; font-weight: 400; color: #e0e0e0; }
+.upravil .datum { color: var(--sedy); font-size: 12px; }
+
+/* obal stránky: obrázek v pozadí a tmavá karta, jako na současné wiki */
+.obal { background-size: cover; background-position: center; background-attachment: fixed; padding: 40px; border-radius: 2px; }
+.karta-obsahu { background: rgba(10,10,10,.85); padding: 50px; border-radius: 16px; box-shadow: 0 0 30px rgba(0,0,0,.8);
+  max-width: 1200px; margin: 60px auto; }
+
+/* typografie obsahu */
+.contents h1, .contents h2, .contents h3, .contents h4 { position: relative; font-weight: 700; }
+.contents h1 { font-size: 32px; line-height: 48px; margin: 32px 0 0; padding-bottom: 6px; }
+.contents h1::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: linear-gradient(90deg, #64b5f6, #2196f3 10%, rgba(13,71,161,0)); }
+.contents h2 { font-size: 24px; line-height: 36px; margin: 16px 0 0; color: var(--text-tlumeny); padding-bottom: 4px; }
+.contents h2::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, #e0e0e0, rgba(97,97,97,0)); }
+.contents h3 { font-size: 20px; line-height: 30px; margin: 16px 0 0; color: var(--text-tlumeny); }
+.contents h4 { font-size: 18px; margin: 12px 0 0; color: var(--text-tlumeny); }
+.contents h1:first-child { margin-top: 0; }
+.kotva { position: absolute; left: -26px; color: #616161; text-decoration: none; font-weight: 400; opacity: 0; }
+.contents :is(h1,h2,h3,h4):hover .kotva { opacity: 1; }
+.contents p { margin: 0; padding-top: 16px; }
+.contents ul, .contents ol { margin: 0; padding: 12px 0 0 24px; }
+.contents li { margin: 4px 0; }
+.contents li > ul, .contents li > ol { padding-top: 4px; }
+.contents hr { border: 0; height: 1px; background: #616161; margin: 24px 0; }
+.contents img { max-width: 100%; height: auto; vertical-align: middle; }
+.contents p.obrazek { text-align: center; }
+.contents p.obrazek img { border-radius: 6px; box-shadow: 0 4px 18px rgba(0,0,0,.6); }
+.contents code { background: #2b2b2b; color: #ffcc80; padding: 2px 6px; border-radius: 4px; font-size: 14px;
+  font-family: Consolas, "Roboto Mono", monospace; }
+.contents strong { color: #fff; }
+
+/* citace (blockquote) se třídami Wiki.js */
+.contents blockquote { position: relative; margin: 16px 0; padding: 0 16px 16px; border-radius: 8px;
+  background: #263238; border-left: 55px solid #607d8b; color: var(--text); }
+.contents blockquote .ikona { position: absolute; left: -55px; top: 0; bottom: 0; width: 55px; display: flex;
+  align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: rgba(255,255,255,.85); }
+.contents blockquote.is-info { background: #0d47a1; border-left-color: #2196f3; color: #e3f2fd; }
+.contents blockquote.is-info .ikona { font-family: Georgia, serif; font-style: italic; }
+.contents blockquote.is-success { background: #1b5e20; border-left-color: #4caf50; color: #e8f5e9; }
+.contents blockquote.is-warning { background: #cd4800; border-left-color: #ff9800; color: #ffe0b2; box-shadow: 0 0 2px #212121; }
+.contents blockquote.is-danger { background: #b71c1c; border-left-color: #f44336; color: #ffebee; }
+
+/* tabulky */
+.tabulka { overflow-x: auto; margin: 16px 0 8px; }
+.contents table { width: 100%; border-collapse: separate; border-spacing: 0; border: 1px solid #757575; border-radius: 5px; }
+.contents th { background: #0d0d0d; color: #9e9e9e; border-bottom: 2px solid #757575; padding: 12px; font-weight: 700; }
+.contents th:first-child { border-top-left-radius: 5px; }
+.contents th:last-child { border-top-right-radius: 5px; }
+.contents td { background: #2e2e2e; padding: 12px; vertical-align: middle; }
+.contents tr + tr td { border-top: 1px solid #3d3d3d; }
+.contents td img { max-height: 120px; border-radius: 4px; }
+.patka { text-align: center; margin-top: 40px; font-style: italic; color: #9e9e9e; font-size: 14px; }
+
+/* tablet a mobil */
+@media (max-width: 1100px) {
+  .telo { grid-template-columns: 1fr; }
+  .hlava-stranky { padding-left: 24px; }
+}
+@media (max-width: 900px) {
+  .tlacitko-menu { display: block; }
+  .navigace { transform: translateX(-100%); transition: transform .2s; }
+  .prepinac-menu:checked ~ .navigace { transform: none; }
+  .prepinac-menu:checked ~ .zastin { display: block; position: fixed; inset: 64px 0 0 0; background: rgba(0,0,0,.5); z-index: 15; }
+  .hlavni { margin-left: 0; }
+  .hledat { display: none; }
+}
+@media (max-width: 600px) {
+  .obal { padding: 8px; background-attachment: scroll; }
+  .karta-obsahu { padding: 20px 16px; margin: 8px auto; border-radius: 10px; }
+  .telo { padding: 8px 8px 24px; }
+  .contents h1 { font-size: 26px; line-height: 36px; }
+  .contents h2 { font-size: 21px; line-height: 30px; }
+  .contents blockquote { border-left-width: 40px; }
+  .contents blockquote .ikona { left: -40px; width: 40px; }
+  .kotva { display: none; }
+  .upravil { display: none; }
+}
+
+/* ikony dlaždic a prsten v nadpisu (obrázky ze staré wiki) */
+.contents h1 img { height: 40px; width: auto; vertical-align: middle; margin-left: 10px; }
+.contents td a img { display: block; margin: 0 auto 8px; height: 40px; width: auto; max-height: none; }
